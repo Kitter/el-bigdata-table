@@ -13,13 +13,14 @@ ElTableBody.directives = {
   Mousewheel
 }
 
+const oldDataComputed = ElTableBody.computed.data
 ElTableBody.computed.data = function () {
   const { table } = this
 
   if (table.isUseVirtual) {
     return table.data.slice(table.start, table.end)
   } else {
-    return ElTableBody.computed.data.call(this)
+    return oldDataComputed.call(this)
   }
 }
 
