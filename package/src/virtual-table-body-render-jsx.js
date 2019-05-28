@@ -66,7 +66,7 @@ export default function render (h) {
                     if (!rowspan || !colspan  || (columnsHidden[cellIndex] && this.fixed)) {
                       return '';
                     } else {
-                      const columnData = { ...column };
+                      const columnData = Object.assign({}, column);
                       if (colspan !== 1) {
                         columnData.realWidth = columnData.realWidth * colspan;
                       }
