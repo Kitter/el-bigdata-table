@@ -24,10 +24,12 @@ ElTableBody.computed.data = function () {
   }
 }
 
-const oldHoverRowHandler = ElTableBody.watch['store.states.hoverRow']
-ElTableBody.watch['store.states.hoverRow'] = function (newVal, oldVal) {
-  if (!this.table.isUseVirtual) {
-    oldHoverRowHandler && oldHoverRowHandler.call(this, newVal, oldVal)
+const oldHoverRowHandler = ElTableBody.watch && ElTableBody.watch['store.states.hoverRow']
+if (oldHoverRowHandler) {
+  ElTableBody.watch['store.states.hoverRow'] = function (newVal, oldVal) {
+    if (!this.table.isUseVirtual) {
+      oldHoverRowHandler && oldHoverRowHandler.call(this, newVal, oldVal)
+    }
   }
 }
 
