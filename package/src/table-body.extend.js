@@ -18,7 +18,6 @@ ElTableBody.computed.data = function () {
   const { table } = this
 
   if (table.isUseVirtual) {
-    console.log(table.start, table.end)
     return table.data.slice(table.start, table.end)
   } else {
     return oldDataComputed.call(this)
@@ -41,7 +40,6 @@ ElTableBody.methods.getIndex = function (index) {
 const oldGetRowClassHandler = ElTableBody.methods.getRowClass
 ElTableBody.methods.getRowClass  = function (row, rowIndex) {
   let classes = oldGetRowClassHandler.call(this, row, rowIndex)
-  console.log(classes)
 
   if (this.table.isUseVirtual && rowIndex === this.store.states.hoverRow) {
     // 兼容element-ui低版本
