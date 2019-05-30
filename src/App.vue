@@ -40,6 +40,7 @@
       width="500">
     </el-table-column>
     <el-table-column
+      fixed="right"
       label="操作"
       width="300">
       <template slot-scope="scope">

@@ -27,9 +27,9 @@ ElTableBody.computed.data = function () {
 const oldHoverRowHandler = ElTableBody.watch && ElTableBody.watch['store.states.hoverRow']
 if (oldHoverRowHandler) {
   ElTableBody.watch['store.states.hoverRow'] = function (newVal, oldVal) {
-    // if (!this.table.isUseVirtual) {
+    if (!this.table.isUseVirtual) {
       oldHoverRowHandler && oldHoverRowHandler.call(this, newVal, oldVal)
-    // }
+    }
   }
 }
 
@@ -41,14 +41,15 @@ const oldGetRowClassHandler = ElTableBody.methods.getRowClass
 ElTableBody.methods.getRowClass  = function (row, rowIndex) {
   let classes = oldGetRowClassHandler.call(this, row, rowIndex)
 
-  if (this.table.isUseVirtual && rowIndex === this.store.states.hoverRow) {
+  if (this.table.isUseVirtual && rowIndex === this.store.states.hoverRow && this.table.rightFixedColumns.length && this.table.fixedColumns.length) {
     // 兼容element-ui低版本
-    if (ElementUiVersion >= 2.8 && ElementUiVersion < 2.9 && Object.prototype.toString.call(classes) === '[object Array]') {
+    if (ElementUiVersion >= 2.8 && Object.prototype.toString.call(classes) === '[object Array]') {
       classes.push('hover-row')
     } else if (typeof classes === 'string') {
       classes += ' hover-row'
     }
   }
+  console.log(classes)
 
   return classes
 }
