@@ -49,7 +49,6 @@ ElTableBody.methods.getRowClass  = function (row, rowIndex) {
       classes += ' hover-row'
     }
   }
-  console.log(classes)
 
   return classes
 }
