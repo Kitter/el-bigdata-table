@@ -18,6 +18,7 @@ ElTableBody.computed.data = function () {
   const { table } = this
 
   if (table.isUseVirtual) {
+    console.log(table.start, table.end)
     return table.data.slice(table.start, table.end)
   } else {
     return oldDataComputed.call(this)
@@ -27,9 +28,9 @@ ElTableBody.computed.data = function () {
 const oldHoverRowHandler = ElTableBody.watch && ElTableBody.watch['store.states.hoverRow']
 if (oldHoverRowHandler) {
   ElTableBody.watch['store.states.hoverRow'] = function (newVal, oldVal) {
-    if (!this.table.isUseVirtual) {
+    // if (!this.table.isUseVirtual) {
       oldHoverRowHandler && oldHoverRowHandler.call(this, newVal, oldVal)
-    }
+    // }
   }
 }
 
@@ -40,12 +41,13 @@ ElTableBody.methods.getIndex = function (index) {
 const oldGetRowClassHandler = ElTableBody.methods.getRowClass
 ElTableBody.methods.getRowClass  = function (row, rowIndex) {
   let classes = oldGetRowClassHandler.call(this, row, rowIndex)
+  console.log(classes)
 
   if (this.table.isUseVirtual && rowIndex === this.store.states.hoverRow) {
     // 兼容element-ui低版本
-    if (ElementUiVersion >= 2.8 && Object.prototype.toString.call(classes) === '[object Array]') {
+    if (ElementUiVersion >= 2.8 && ElementUiVersion < 2.9 && Object.prototype.toString.call(classes) === '[object Array]') {
       classes.push('hover-row')
-    } else {
+    } else if (typeof classes === 'string') {
       classes += ' hover-row'
     }
   }

@@ -2,16 +2,14 @@
   <el-table
     :data="tableData"
     border
-    :rowHeight="57"
+    :rowHeight="60"
     height="500"
     useVirtual>
     <el-table-column
       type="index"
       width="100"
-      fixed
     ></el-table-column>
     <el-table-column
-      fixed
       prop="date"
       label="日期"
       width="500">
@@ -42,7 +40,6 @@
       width="500">
     </el-table-column>
     <el-table-column
-      fixed="right"
       label="操作"
       width="300">
       <template slot-scope="scope">
@@ -63,7 +60,7 @@
 
     data() {
       return {
-        tableData: Array.from({ length: 10000 }, (_, idx) => ({
+        tableData: Array.from({ length: 20000 }, (_, idx) => ({
           idx: idx + 1,
           date: '2016-05-03',
           name: '王小虎',

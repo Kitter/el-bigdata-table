@@ -9,6 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '../package/index'
 
 Vue.use(ElementUi)
+console.log(ElementUi.version)
 
 Vue.config.productionTip = false
 
