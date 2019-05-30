@@ -1,7 +1,9 @@
 # el-bigdata-table
 
 用来实现el-table展示大数据
+
 流畅渲染万级数据并不会影响到el-table的原有功能
+
 注：暂不支持在使用element按需加载的时候使用
 
 [点击查看在线demo](https://code-farmer-i.github.io/el-bigdata-table/dist/)
