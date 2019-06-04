@@ -4,6 +4,8 @@
 
 流畅渲染万级数据并不会影响到el-table的原有功能
 
+element版本兼容：目前测试能兼容的element-ui的版本为 2.3.9 - 2.8.2
+
 注：暂不支持在使用element按需加载的时候使用
 
 [点击查看在线demo](https://code-farmer-i.github.io/el-bigdata-table/dist/)
