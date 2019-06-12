@@ -2,7 +2,7 @@ import ElementUi, {
   Table
 } from 'element-ui'
 
-import Mousewheel from 'element-ui/src/directives/mousewheel'
+import Mousewheel from 'element-ui/lib/directives/mousewheel'
 
 import VirtualTableBodyRender from './virtual-table-body-render.js'
 
