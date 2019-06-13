@@ -10,12 +10,6 @@
 npm install el-bigdata-table -S
 ```
 
-## Quick Start
-``` javascript
-// main.js
-import 'el-bigdata-table'
-```
-
 ## webpack.base.conf.js 
 因代码中使用了es6的语法 所以需要添加babel配置 
 ``` javascript
@@ -54,6 +48,12 @@ module.exports = {
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
+```
+
+## Quick Start
+``` javascript
+// main.js
+import 'el-bigdata-table'
 ```
 
 ### 基础用法
