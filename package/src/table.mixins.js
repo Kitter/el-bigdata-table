@@ -35,7 +35,8 @@ export default {
     },
 
     getVisibleRange (ExpectStart) {
-      const visibleCount = Math.ceil(this.height / this.rowHeight)
+      console.log(this.tableHeight)
+      const visibleCount = Math.ceil(this.tableHeight / this.rowHeight)
 
       return {
         start: ExpectStart,
@@ -63,14 +64,22 @@ export default {
       return this.data.length * this.rowHeight
     },
     isUseVirtual () {
-      return 'useVirtual' in this.$attrs && this.$attrs.useVirtual !== false && this.height
+      return 'useVirtual' in this.$attrs && this.$attrs.useVirtual !== false
     }
   },
   watch: {
     scrollTop: {
-      immediate: true,
       handler (top) {
         this.computeScrollToRow(top)
+      }
+    },
+    data: {
+      immediate: true,
+      handler () {
+        this.$nextTick(() => {
+          this.tableHeight = parseInt(this.$el.clientHeight)
+          this.computeScrollToRow(0)
+        })
       }
     }
   }
