@@ -2,7 +2,7 @@ export default {
   props: {
     rowHeight: {
       type: Number,
-      default: 48
+      default: 50
     }
   },
   data () {
@@ -23,6 +23,11 @@ export default {
       }
     })
   },
+  activated () {
+    if (this.isUseVirtual) {
+      this.computeScrollToRow(0)
+    }
+  },
   methods: {
     computeScrollToRow (offset) {
       const startIndex = parseInt(offset / this.rowHeight)
@@ -35,7 +40,7 @@ export default {
     },
 
     getVisibleRange (ExpectStart) {
-      const visibleCount = Math.ceil(this.height / this.rowHeight)
+      const visibleCount = Math.ceil(this.tableHeight / this.rowHeight)
 
       return {
         start: ExpectStart,
@@ -63,14 +68,25 @@ export default {
       return this.data.length * this.rowHeight
     },
     isUseVirtual () {
-      return 'useVirtual' in this.$attrs && this.$attrs.useVirtual !== false && this.height
+      return 'useVirtual' in this.$attrs && this.$attrs.useVirtual !== false
     }
   },
   watch: {
     scrollTop: {
-      immediate: true,
       handler (top) {
         this.computeScrollToRow(top)
+      }
+    },
+    data: {
+      immediate: true,
+      handler () {
+        if (this.isUseVirtual) {
+          setTimeout(() => {
+            this.tableHeight = this.$el.clientHeight
+            this.computeScrollToRow(this.scrollTop)
+            this.$nextTick(this.doLayout)
+          }, 0)
+        }
       }
     }
   }
