@@ -56,6 +56,22 @@ module.exports = {
 ```
 
 ## vue.config.js (vue-cli 3.x)
+``` javascript
+'use strict'
+const path = require('path')
+const fs = require('fs')
+
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+
+let dirsName = fs.readdirSync(resolve('node_modules')).filter(dirName => /el-bigdata-table/.test(dirName))
+
+module.exports = {
+  transpileDependencies: [...dirsName] ,
+  ...//其他代码
+}
+```
 
 ## Quick Start
 ``` javascript
