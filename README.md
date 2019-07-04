@@ -16,7 +16,7 @@ npm install el-bigdata-table -S
 ```
 
 ## 如果你使用的是vue-cli 2.x 需添加以下webpack配置
-## webpack.base.conf.js
+# webpack.base.conf.js
 ``` javascript
 'use strict'
 const path = require('path')
@@ -56,7 +56,7 @@ module.exports = {
 ```
 
 ## 如果你使用的是vue-cli 3.x 需添加以下webpack配置
-## vue.config.js (vue-cli 3.x)
+# vue.config.js (vue-cli 3.x)
 ``` javascript
 'use strict'
 const path = require('path')
