@@ -15,7 +15,7 @@ element版本兼容：目前测试能兼容的element-ui的版本为 2.3.9 - 2.8
 npm install el-bigdata-table -S
 ```
 
-## webpack.base.conf.js 
+## webpack.base.conf.js (vue-cli 2.x)
 因代码中使用了es6的语法 所以需要添加babel配置 
 ``` javascript
 'use strict'
@@ -55,9 +55,12 @@ module.exports = {
       },
 ```
 
+## vue.config.js (vue-cli 3.x)
+
 ## Quick Start
 ``` javascript
 // main.js
+// 注：需要在Vue.use(ElementUi) 之前引入
 import 'el-bigdata-table'
 ```
 
