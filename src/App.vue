@@ -74,7 +74,7 @@
     },
     data() {
       return {
-        size: 100,
+        size: 1000,
         tableData: []
       }
     },

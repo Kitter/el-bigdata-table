@@ -68,11 +68,10 @@ export default {
       return this.data.length * this.rowHeight
     },
     isUseVirtual () {
-      return ('useVirtual' in this.$attrs && this.$attrs.useVirtual !== false)
-              &&
-              ('use-virtual' in this.$attrs && this.$attrs['use-virtual'] !== false)
-              &&
-              this.height
+      return (('useVirtual' in this.$attrs && this.$attrs.useVirtual !== false)
+      ||
+      ('use-virtual' in this.$attrs && this.$attrs['use-virtual'] !== false))
+      && this.height
     }
   },
   watch: {
