@@ -1,6 +1,7 @@
 export default function render (h) {
   const columnsHidden = this.columns.map((column, index) => this.isColumnHidden(index));
   let rows = this.data;
+
   if (this.store.states.lazy && Object.keys(this.store.states.lazyTreeNodeMap).length) {
     rows = rows.reduce((prev, item) => {
       prev.push(item);
@@ -23,6 +24,7 @@ export default function render (h) {
       return prev;
     }, []);
   }
+
   return (
     <div
       style={[{height: `${this.table.virtualBodyHeight}px`}]}

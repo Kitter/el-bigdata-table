@@ -3,75 +3,28 @@ export default {
     rowHeight: {
       type: Number,
       default: 50
-    }
+    },
+    excessRows: {
+      type: Number,
+      default: 5
+    },
+    useVirtual: Boolean
   },
   data () {
     return {
       scrollTop: 0,
       innerTop: 0,
       start: 0,
-      preEnd: 0,
       end: 0
     }
   },
-  mounted () {
-    this.$nextTick(() => {
-      if (this.isUseVirtual) {
-        const tableBodyWrapper = this.$el.querySelector('.el-table__body-wrapper')
-        tableBodyWrapper.addEventListener('scroll', this.handleScroll)
-        tableBodyWrapper.addEventListener('DOMMouseScroll', this.handleScroll)
-      }
-    })
-  },
-  activated () {
-    if (this.isUseVirtual) {
-      this.computeScrollToRow(0)
-    }
-  },
-  methods: {
-    computeScrollToRow (offset) {
-      let startIndex = parseInt(offset / this.rowHeight)
-
-      const {start, end} = this.getVisibleRange(startIndex)
-
-      this.start = start
-      this.end = end
-      this.innerTop = this.start * this.rowHeight
-    },
-
-    getVisibleRange (ExpectStart) {
-      const visibleCount = Math.ceil(this.height / this.rowHeight)
-
-      return {
-        start: ExpectStart,
-        end: ExpectStart + visibleCount
-      }
-    },
-    //  滚动条拖动
-    handleScroll (e) {
-      const ele = e.srcElement || e.target
-      let { scrollTop } = ele
-      const bodyScrollHeight = this.$el.querySelector('.el-table__body').scrollHeight
-
-      // 解决 滚动时 行hover高亮的问题
-      this.store.states.hoverRow = null
-
-      if (this.virtualBodyHeight < scrollTop + bodyScrollHeight) {
-        scrollTop = this.virtualBodyHeight - bodyScrollHeight
-      }
-
-      this.scrollTop = scrollTop
-    }
-  },
   computed: {
+    visibleCount () {
+      return Math.ceil(this.height / this.rowHeight)
+    },
+
     virtualBodyHeight () {
       return this.data.length * this.rowHeight
-    },
-    isUseVirtual () {
-      return (('useVirtual' in this.$attrs && this.$attrs.useVirtual !== false)
-      ||
-      ('use-virtual' in this.$attrs && this.$attrs['use-virtual'] !== false))
-      && this.height
     }
   },
   watch: {
@@ -81,8 +34,62 @@ export default {
         this.computeScrollToRow(top)
       }
     },
+
     virtualBodyHeight () {
       setTimeout(this.doLayout, 10)
+    },
+
+    height () {
+      this.computeScrollToRow(this.scrollTop)
+    }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      if (this.useVirtual) {
+        const tableBodyWrapper = this.$el.querySelector('.el-table__body-wrapper')
+        tableBodyWrapper.addEventListener('scroll', this.handleScroll)
+        tableBodyWrapper.addEventListener('DOMMouseScroll', this.handleScroll)
+      }
+    })
+  },
+  activated () {
+    if (this.useVirtual) {
+      this.computeScrollToRow(0)
+    }
+  },
+  methods: {
+    computeScrollToRow (scrollTop) {
+      let startIndex = parseInt(scrollTop / this.rowHeight)
+
+      const { start, end } = this.getVisibleRange(startIndex)
+
+      this.start = start
+      this.end = end
+      this.innerTop = this.start * this.rowHeight
+    },
+
+    getVisibleRange (expectStart) {
+      const start = expectStart - this.excessRows
+
+      return {
+        start: start >= 0 ? start : 0,
+        end: expectStart + this.visibleCount + this.excessRows
+      }
+    },
+
+    handleScroll (e) {
+      const ele = e.srcElement || e.target
+      let { scrollTop } = ele
+      const bodyScrollHeight = this.visibleCount * this.rowHeight
+
+      // 解决 滚动时 行hover高亮的问题
+      this.store.states.hoverRow = null
+
+      if (this.virtualBodyHeight < scrollTop + bodyScrollHeight) {
+        scrollTop = this.virtualBodyHeight - bodyScrollHeight
+      }
+
+      this.scrollTop = scrollTop
     }
   }
 }

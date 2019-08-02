@@ -6,8 +6,24 @@ import Mousewheel from 'element-ui/lib/directives/mousewheel'
 
 import VirtualTableBodyRender from './virtual-table-body-render.js'
 
+function trans (version) {
+  const versionNums = version.toString().split('.')
+  let result = Array.from({ length: 3 })
+
+  result = result.map((_, idx) => {
+    const num = versionNums[idx]
+
+    if (!num) {
+      return '00'
+    } else {
+      return +num < 10 ? `0${num}` : num
+    }
+  }).join('')
+
+  return +result
+}
+
 const ElTableBody = Table.components.TableBody
-const ElementUiVersion = +ElementUi.version.split('.').slice(0, 2).join('.')
 
 ElTableBody.directives = {
   Mousewheel
@@ -17,7 +33,7 @@ const oldDataComputed = ElTableBody.computed.data
 ElTableBody.computed.data = function () {
   const { table } = this
 
-  if (table.isUseVirtual) {
+  if (table.useVirtual) {
     return table.data.slice(table.start, table.end)
   } else {
     return oldDataComputed.call(this)
@@ -27,7 +43,7 @@ ElTableBody.computed.data = function () {
 const oldHoverRowHandler = ElTableBody.watch && ElTableBody.watch['store.states.hoverRow']
 if (oldHoverRowHandler) {
   ElTableBody.watch['store.states.hoverRow'] = function (newVal, oldVal) {
-    if (!this.table.isUseVirtual) {
+    if (!this.table.useVirtual) {
       oldHoverRowHandler && oldHoverRowHandler.call(this, newVal, oldVal)
     }
   }
@@ -41,9 +57,9 @@ const oldGetRowClassHandler = ElTableBody.methods.getRowClass
 ElTableBody.methods.getRowClass  = function (row, rowIndex) {
   let classes = oldGetRowClassHandler.call(this, row, rowIndex)
 
-  if (this.table.isUseVirtual && rowIndex === this.store.states.hoverRow && this.table.rightFixedColumns.length && this.table.fixedColumns.length) {
+  if (this.table.useVirtual && rowIndex === this.store.states.hoverRow && (this.table.rightFixedColumns.length || this.table.fixedColumns.length)) {
     // 兼容element-ui低版本
-    if (ElementUiVersion >= 2.8 && Object.prototype.toString.call(classes) === '[object Array]') {
+    if (trans(ElementUi.version) >= trans(2.8) && Object.prototype.toString.call(classes) === '[object Array]') {
       classes.push('hover-row')
     } else if (typeof classes === 'string') {
       classes += ' hover-row'
@@ -55,7 +71,7 @@ ElTableBody.methods.getRowClass  = function (row, rowIndex) {
 
 const oldRender = ElTableBody.render
 ElTableBody.render = function (h) {
-  if (this.table.isUseVirtual) {
+  if (this.table.useVirtual) {
     return VirtualTableBodyRender.call(this, h)
   } else {
     return oldRender.call(this, h)

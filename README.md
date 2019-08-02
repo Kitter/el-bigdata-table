@@ -133,8 +133,9 @@ import 'el-bigdata-table'
 
 属性  |  说明  |  类型  |  默认值
 :-------: | -------  |  :-------:  |  :-------:
-useVirtual  |  是否开启虚拟滚动  |  Boolean  |  false
-rowHeight  |  行高(必须要设置正确的行高，否则会导致表格计算不正确)  |  Number  |  48
+use-virtual  |  是否开启虚拟滚动  |  Boolean  |  false
+row-height  |  行高(必须要设置正确的行高，否则会导致表格计算不正确)  |  Number  |  48
+excess-rows  |  可视区域上方和下方额外渲染的行数，行数越多表格接替渲染效果越好，但越耗性能 |  Number  |  5
 
 作者wx: ckang1229
 
