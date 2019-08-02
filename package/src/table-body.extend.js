@@ -23,6 +23,8 @@ function trans (version) {
   return +result
 }
 
+const newVersion = trans(ElementUi.version) >= trans(2.8)
+
 const ElTableBody = Table.components.TableBody
 
 ElTableBody.directives = {
@@ -57,9 +59,13 @@ const oldGetRowClassHandler = ElTableBody.methods.getRowClass
 ElTableBody.methods.getRowClass  = function (row, rowIndex) {
   let classes = oldGetRowClassHandler.call(this, row, rowIndex)
 
-  if (this.table.useVirtual && rowIndex === this.store.states.hoverRow && (this.table.rightFixedColumns.length || this.table.fixedColumns.length)) {
+  if (
+    this.table.useVirtual
+    && rowIndex === this.store.states.hoverRow
+    && (this.table.rightFixedColumns.length || this.table.fixedColumns.length)
+  ) {
     // 兼容element-ui低版本
-    if (trans(ElementUi.version) >= trans(2.8) && Object.prototype.toString.call(classes) === '[object Array]') {
+    if (newVersion && Object.prototype.toString.call(classes) === '[object Array]') {
       classes.push('hover-row')
     } else if (typeof classes === 'string') {
       classes += ' hover-row'
