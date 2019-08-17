@@ -133,7 +133,6 @@ export default {
         }
       }
 
-      console.log(this.columnsPosotion, this.columnStart, this.columnEnd, this.tableBodyWrapperWidth)
       this.columnStart = start
       this.columnEnd = end
     },

@@ -35,7 +35,6 @@ const oldDataComputed = ElTableBody.computed.data
 ElTableBody.computed.data = function () {
   const { table } = this
   const tableData = oldDataComputed.call(this)
-  console.log(tableData, table.start, table.end)
 
   if (table.useVirtual) {
     return tableData.slice(table.start, table.end)
