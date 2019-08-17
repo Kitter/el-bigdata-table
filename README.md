@@ -4,7 +4,7 @@
 
 流畅渲染万级数据并不会影响到el-table的原有功能
 
-element版本兼容：目前测试能兼容的element-ui的版本为 2.3.9 - 2.8.2
+element版本兼容：目前测试能兼容的element-ui的版本为 2.3.9 - 2.11.1
 
 注：暂不支持在使用element按需加载的时候使用
 
@@ -113,8 +113,9 @@ import 'el-bigdata-table'
 
 属性  |  说明  |  类型  |  默认值
 :-------: | -------  |  :-------:  |  :-------:
-useVirtual  |  是否开启虚拟滚动  |  Boolean  |  false
-rowHeight  |  行高(必须要设置正确的行高，否则会导致表格计算不正确)  |  Number  |  48
+use-virtual  |  是否开启虚拟滚动  |  Boolean  |  false
+row-height  |  行高(必须要设置正确的行高，否则会导致表格计算不正确)  |  Number  |  48
+excess-rows  |  表格可视区域上方与下方多渲染的行数，该数值越大，接替渲染的效果越好，渲染效率会受影响  |  Number  |  5
 
 作者wx: ckang1229
 
