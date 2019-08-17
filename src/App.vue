@@ -60,8 +60,8 @@
     },
 
     data() {
-      return {
-        tableData: Array.from({ length: 20000 }, (_, idx) => ({
+      setTimeout(() => {
+        this.tableData = Array.from({ length: 3000 }, (_, idx) => ({
           idx: idx + 1,
           date: '2016-05-03',
           name: '王小虎',
@@ -70,6 +70,10 @@
           address: '上海市普陀区金沙江路 1516 弄',
           zip: 200333
         }))
+      }, 2000)
+
+      return {
+        tableData: []
       }
     }
   }
