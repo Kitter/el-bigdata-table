@@ -98,7 +98,7 @@ export default function render (h) {
                           on-mouseenter={ ($event) => this.handleCellMouseEnter($event, row) }
                           on-mouseleave={ this.handleCellMouseLeave }>
                           {
-                            column.renderCell.call(
+                            this.isRenderCell(column, cellIndex) && column.renderCell.call(
                               this._renderProxy,
                               h,
                               data,

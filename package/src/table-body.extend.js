@@ -34,11 +34,12 @@ ElTableBody.directives = {
 const oldDataComputed = ElTableBody.computed.data
 ElTableBody.computed.data = function () {
   const { table } = this
+  const tableData = oldDataComputed.call(this)
 
   if (table.useVirtual) {
-    return table.data.slice(table.start, table.end)
+    return tableData.slice(table.start, table.end)
   } else {
-    return oldDataComputed.call(this)
+    return tableData
   }
 }
 
@@ -74,6 +75,11 @@ ElTableBody.methods.getRowClass  = function (row, rowIndex) {
 
   return classes
 }
+
+ElTableBody.methods.isRenderCell = function (column, cellIndex) {
+  return (cellIndex >= this.table.columnStart && cellIndex <= this.table.columnEnd && !column.fixed) || (column.fixed && this.fixed)
+}
+
 
 const oldRender = ElTableBody.render
 ElTableBody.render = function (h) {

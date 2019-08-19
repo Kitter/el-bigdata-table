@@ -15,8 +15,8 @@ element版本兼容：目前测试能兼容的element-ui的版本为 2.3.9 - 2.1
 npm install el-bigdata-table -S
 ```
 
-## 如果你使用的是vue-cli 2.x 需添加以下webpack配置
-### webpack.base.conf.js
+## webpack.base.conf.js 
+因代码中使用了es6的语法 所以需要添加babel配置 
 ``` javascript
 'use strict'
 const path = require('path')
@@ -55,29 +55,9 @@ module.exports = {
       },
 ```
 
-## 如果你使用的是vue-cli 3.x 需添加以下webpack配置
-### vue.config.js (vue-cli 3.x)
-``` javascript
-'use strict'
-const path = require('path')
-const fs = require('fs')
-
-function resolve (dir) {
-  return path.join(__dirname, '..', dir)
-}
-
-let dirsName = fs.readdirSync(resolve('node_modules')).filter(dirName => /el-bigdata-table/.test(dirName))
-
-module.exports = {
-  transpileDependencies: [...dirsName] ,
-  ...//其他代码
-}
-```
-
 ## Quick Start
 ``` javascript
 // main.js
-// 注：需要在Vue.use(ElementUi) 之前引入
 import 'el-bigdata-table'
 ```
 
@@ -135,7 +115,7 @@ import 'el-bigdata-table'
 :-------: | -------  |  :-------:  |  :-------:
 use-virtual  |  是否开启虚拟滚动  |  Boolean  |  false
 row-height  |  行高(必须要设置正确的行高，否则会导致表格计算不正确)  |  Number  |  48
-excess-rows  |  可视区域上方和下方额外渲染的行数，行数越多表格接替渲染效果越好，但越耗性能 |  Number  |  5
+excess-rows  |  表格可视区域上方与下方额外渲染的行数，行数越多表格接替渲染效果越好，但越耗性能  |  Number  |  5
 
 作者wx: ckang1229
 

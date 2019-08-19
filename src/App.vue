@@ -1,65 +1,54 @@
 <template>
-  <div>
-    <el-table
-      :data="tableData"
-      border
-      :rowHeight="60"
-      height="500"
-      useVirtual>
-      <el-table-column
-        type="index"
-        width="100"
-      ></el-table-column>
-      <el-table-column
-        prop="date"
-        label="日期"
-        width="500">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="500">
-      </el-table-column>
-      <el-table-column
-        prop="province"
-        label="省份"
-        width="500">
-      </el-table-column>
-      <el-table-column
-        prop="city"
-        label="市区"
-        width=500">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址"
-        width="500">
-      </el-table-column>
-      <el-table-column
-        prop="zip"
-        label="邮编"
-        width="500">
-      </el-table-column>
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="300">
-        <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-          <el-button type="text" size="small">编辑</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage4"
-            :page-sizes="[5, 100, 200, 300, 400]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
-    </el-pagination>
-  </div>
+  <el-table
+    :data="tableData"
+    border
+    :rowHeight="60"
+    height="500"
+    useVirtual>
+    <el-table-column
+      type="index"
+      width="100"
+    ></el-table-column>
+    <el-table-column
+      prop="date"
+      label="日期"
+      width="500">
+    </el-table-column>
+    <el-table-column
+      prop="name"
+      label="姓名"
+      width="500">
+    </el-table-column>
+    <el-table-column
+      prop="province"
+      label="省份"
+      width="500">
+    </el-table-column>
+    <el-table-column
+      prop="city"
+      label="市区"
+      width=500">
+    </el-table-column>
+    <el-table-column
+      prop="address"
+      label="地址"
+      width="500">
+    </el-table-column>
+    <el-table-column
+      prop="zip"
+      label="邮编"
+      width="500">
+    </el-table-column>
+    <el-table-column
+      fixed="right"
+      label="操作"
+      width="300">
+      <template slot-scope="scope">
+        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+        <el-button type="text" size="small">编辑</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
 </template>
 
 <script>
@@ -67,33 +56,24 @@
     methods: {
       handleClick(row) {
         console.log(row);
-      },
-      handleSizeChange (size) {
-        this.size = size
       }
     },
+
     data() {
+      setTimeout(() => {
+        this.tableData = Array.from({ length: 3000 }, (_, idx) => ({
+          idx: idx + 1,
+          date: '2016-05-03',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1516 弄',
+          zip: 200333
+        }))
+      }, 2000)
+
       return {
-        size: 1000,
         tableData: []
-      }
-    },
-    watch: {
-      size: {
-        immediate: true,
-        handler () {
-          setTimeout(() => {
-            this.tableData = Array.from({length: this.size}, (_, idx) => ({
-              idx: idx + 1,
-              date: '2016-05-03',
-              name: '王小虎',
-              province: '上海',
-              city: '普陀区',
-              address: '上海市普陀区金沙江路 1516 弄',
-              zip: 200333
-            }))
-          }, 1000)
-        }
       }
     }
   }
