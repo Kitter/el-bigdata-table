@@ -45,13 +45,15 @@ export default function render (h) {
           <tbody>
           {
             this._l(rows, (row, index) => {
-              const $index = this.getIndex(index)
-              const rowKey = this.table.rowKey ? this.getKeyOfRow(row, $index) : $index;
+              const $index = this.getIndex(index);
               const treeNode = this.treeData && this.treeData[rowKey];
               const rowClasses = this.getRowClass(row, $index);
+              const rowKey = this.table.rowKey ? this.getKeyOfRow(row, $index) : $index;
+
               if (treeNode) {
                 rowClasses.push('el-table__row--level-' + treeNode.level);
               }
+
               const tr = (<tr
                 v-show={ treeNode ? treeNode.display : true }
                 style={ this.rowStyle ? this.getRowStyle(row, $index) : null }

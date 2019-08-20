@@ -1,3 +1,21 @@
+import debounce from 'lodash.debounce'
+import { Table } from 'element-ui'
+
+const oldDoLayoutHandler = Table.methods.doLayout
+Table.methods.doLayout = function (...arg) {
+  oldDoLayoutHandler.call(this, ...arg)
+
+  if (this.useVirtual) {
+    let position = 0
+
+    this.columnsPosotion = this.columns.map(({ realWidth = 0, width = 0, minWidth = 0 }, columnIdx) => {
+      return [position, position += Math.max(realWidth, width, minWidth)]
+    })
+
+    this.computeScrollToColumn(this.scrollLeft)
+  }
+}
+
 export default {
   props: {
     rowHeight: {
@@ -15,7 +33,6 @@ export default {
       scrollTop: 0,
       scrollLeft: 0,
       columnsPosotion: {},
-      tableBodyWrapperWidth: 0,
       innerTop: 0,
       start: 0,
       end: 0,
@@ -29,7 +46,11 @@ export default {
     },
 
     virtualBodyHeight () {
-      return this.store.states.data.length * this.rowHeight
+      const {
+        data
+      } = this.store.states
+
+      return data ? data.length * this.rowHeight : 0
     }
   },
   watch: {
@@ -44,39 +65,22 @@ export default {
       this.computeScrollToColumn(left)
     },
 
-    columns () {
-      let position = 0
-
-      this.columnsPosotion = this.columns.map(({ realWidth = 0, width = 0, minWidth = 0 }, columnIdx) => {
-        return [position, position += Math.max(realWidth, width, minWidth)]
-      })
-    },
-
     virtualBodyHeight () {
-      setTimeout(this.doLayout, 10)
+      if (this.useVirtual) setTimeout(this.doLayout, 10)
     },
 
     height () {
-      this.computeScrollToRow(this.scrollTop)
-    },
-
-    tableBodyWrapperWidth () {
-      this.computeScrollToColumn(this.scrollLeft)
+      if (this.useVirtual) this.computeScrollToRow(this.scrollTop)
     }
   },
   mounted () {
-    this.$nextTick(() => {
-      if (this.useVirtual) {
-        const tableBodyWrapper = this.$el.querySelector('.el-table__body-wrapper')
-        this.tableBodyWrapperWidth = tableBodyWrapper.clientWidth
-
-        this.bindEvent('bind')
-      }
-    })
+    if (this.useVirtual) {
+      this.bindEvent('bind')
+    }
   },
   activated () {
     if (this.useVirtual) {
-      this.computeScrollToRow(0)
+      this.scrollTop = 0
       this.bindEvent('bind')
     }
   },
@@ -96,26 +100,17 @@ export default {
 
       if (!this.binded && action === 'bind') {
         tableBodyWrapper.addEventListener('scroll', this.handleScroll)
-        tableBodyWrapper.addEventListener('DOMMouseScroll', this.handleScroll)
-        window.addEventListener('resize', this.recalculate)
         this.binded = true
       } else if (this.binded && action === 'unbind') {
         tableBodyWrapper.removeEventListener('scroll', this.handleScroll)
-        tableBodyWrapper.removeEventListener('DOMMouseScroll', this.handleScroll)
-        window.removeEventListener('resize', this.recalculate)
         this.binded = false
       }
     },
 
-    recalculate () {
-      const tableBodyWrapper = this.$el.querySelector('.el-table__body-wrapper')
-
-      this.tableBodyWrapperWidth = tableBodyWrapper.clientWidth
-    },
-
     computeScrollToColumn (scrollLeft) {
-      let start = 0, end = 0
+      let start = 0, end = this.columns.length
       let visibleWidth = 0
+      const bodyWidth  = this.$el.clientWidth
 
       for (let i = 0;i < this.columnsPosotion.length; i++) {
         const [left, right] = this.columnsPosotion[i]
@@ -127,7 +122,7 @@ export default {
           visibleWidth += (right - left)
         }
 
-        if (visibleWidth + this.layout.gutterWidth >= this.tableBodyWrapperWidth) {
+        if (visibleWidth + this.layout.gutterWidth >= bodyWidth ) {
           end = i
           break
         }
