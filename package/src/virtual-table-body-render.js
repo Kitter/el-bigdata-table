@@ -48,7 +48,7 @@ export default function render (h) {
               const $index = this.getIndex(index);
               const treeNode = this.treeData && this.treeData[rowKey];
               const rowClasses = this.getRowClass(row, $index);
-              const rowKey = this.table.rowKey ? this.getKeyOfRow(row, $index) : $index;
+              const rowKey = this.table.useRowKey ? (this.table.rowKey ? this.getKeyOfRow(row, $index) : $index) : null;
 
               if (treeNode) {
                 rowClasses.push('el-table__row--level-' + treeNode.level);

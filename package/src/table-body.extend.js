@@ -80,7 +80,6 @@ ElTableBody.methods.isRenderCell = function (column, cellIndex) {
   return (cellIndex >= this.table.columnStart && cellIndex <= this.table.columnEnd && !column.fixed) || (column.fixed && this.fixed)
 }
 
-
 const oldRender = ElTableBody.render
 ElTableBody.render = function (h) {
   if (this.table.useVirtual) {

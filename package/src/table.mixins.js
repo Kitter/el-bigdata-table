@@ -1,4 +1,3 @@
-import debounce from 'lodash.debounce'
 import { Table } from 'element-ui'
 
 const oldDoLayoutHandler = Table.methods.doLayout
@@ -26,7 +25,8 @@ export default {
       type: Number,
       default: 5
     },
-    useVirtual: Boolean
+    useVirtual: Boolean,
+    useRowKey: Boolean
   },
   data () {
     return {

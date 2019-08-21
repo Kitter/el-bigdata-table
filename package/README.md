@@ -10,8 +10,8 @@
 npm install el-bigdata-table -S
 ```
 
-## webpack.base.conf.js 
-因代码中使用了es6的语法 所以需要添加babel配置 
+## webpack.base.conf.js
+因代码中使用了es6的语法 所以需要添加babel配置
 ``` javascript
 'use strict'
 const path = require('path')
@@ -30,7 +30,7 @@ let dirsName = fs.readdirSync(resolve('node_modules')).filter(dirName => /el-big
 const includesDirs = dirsName.map(dir => resolve(`node_modules/${dir}/src`))
 
 module.exports = {
-  ... //省略的代码 
+  ... //省略的代码
   module: {
     rules: [
       // 省略代码...
@@ -111,6 +111,7 @@ import 'el-bigdata-table'
 use-virtual  |  是否开启虚拟滚动  |  Boolean  |  false
 row-height  |  行高(必须要设置正确的行高，否则会导致表格计算不正确)  |  Number  |  48
 excess-rows  |  表格可视区域上方与下方额外渲染的行数，行数越多表格接替渲染效果越好，但越耗性能  |  Number  |  5
+use-row-key  |  大部分场景下可以不使用rowKey来最大化复用dom，极大的提升渲染效率  |  Boolean  | false
 
 作者wx: ckang1229
 
