@@ -77,7 +77,12 @@ ElTableBody.methods.getRowClass  = function (row, rowIndex) {
 }
 
 ElTableBody.methods.isRenderCell = function (column, cellIndex) {
-  return (cellIndex >= this.table.columnStart && cellIndex <= this.table.columnEnd && !column.fixed) || (column.fixed && this.fixed)
+  const { table } = this
+  const isFixedColumn = column.fixed
+  const isFixedColumnInSideFixedBody = isFixedColumn && this.fixed
+  const isInVisibleArea = cellIndex >= table.columnStart && cellIndex <= table.columnEnd
+
+  return table.useVirtualColumn ? isInVisibleArea || isFixedColumnInSideFixedBody : !isFixedColumn || isFixedColumnInSideFixedBody
 }
 
 const oldRender = ElTableBody.render

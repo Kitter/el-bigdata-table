@@ -4,11 +4,11 @@ const oldDoLayoutHandler = Table.methods.doLayout
 Table.methods.doLayout = function (...arg) {
   oldDoLayoutHandler.call(this, ...arg)
 
-  if (this.useVirtual) {
+  if (this.useVirtual && this.useVirtualColumn) {
     let position = 0
 
     this.columnsPosotion = this.columns.map(({ realWidth = 0, width = 0, minWidth = 0 }, columnIdx) => {
-      return [position, position += Math.max(realWidth, width, minWidth)]
+      return [position, position += Math.max(realWidth, width ? width : minWidth)]
     })
 
     this.computeScrollToColumn(this.scrollLeft)
@@ -26,7 +26,11 @@ export default {
       default: 5
     },
     useVirtual: Boolean,
-    useRowKey: Boolean
+    useRowKey: Boolean,
+    useVirtualColumn: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
@@ -42,7 +46,7 @@ export default {
   },
   computed: {
     visibleCount () {
-      return Math.ceil(this.height / this.rowHeight)
+      return Math.ceil(parseFloat(this.height) / this.rowHeight)
     },
 
     virtualBodyHeight () {
@@ -62,7 +66,9 @@ export default {
     },
 
     scrollLeft (left) {
-      this.computeScrollToColumn(left)
+      if (this.useVirtualColumn) {
+        this.computeScrollToColumn(left)
+      }
     },
 
     virtualBodyHeight () {
@@ -155,6 +161,12 @@ export default {
       const ele = e.srcElement || e.target
       let { scrollTop, scrollLeft } = ele
       const bodyScrollHeight = this.visibleCount * this.rowHeight
+
+      if (!this.useRowKey) {
+        const focusItem = this.$el.querySelector(':focus')
+
+        focusItem && focusItem.blur()
+      }
 
       // 解决 滚动时 行hover高亮的问题
       this.store.states.hoverRow = null
